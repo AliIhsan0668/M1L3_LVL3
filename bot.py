@@ -35,4 +35,14 @@ async def ban_error(ctx, error):
     elif isinstance(error, commands.MemberNotFound):
         await ctx.send("Kullanıcı bulunamadı!")
 
+@bot.event
+async def on_message(message):
+    if message.author==bot.user:
+        return
+    
+    if any(word.startswith("http") for word in message.content.split()):
+        await message.author.ban(reason="bağlantı göndermek yasaktır")
+        await message.channel.send(f"{message.author.mention} bağlantı gönderdiği için yasaklandı")
+    await bot.process_commands(message)
+    
 bot.run(token)
