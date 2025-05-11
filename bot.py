@@ -55,23 +55,12 @@ async def on_member_join(member):
     for channel in member.guild.text_channels:
         await channel.send(f'Hoş geldiniz: , {member.mention}!')
                            
-@bot.event
-async def guess(message,self):
-    if message.author==bot.user:
-        return
-    if message.content.startswith('$guess'):
-        await message.channel.send('1 ve 10 arasında sayı tuttum bil bakalım!')
-        def is_correct(m):
-            return m.author == message.author and m.content.isdigit()
-
-        answer = random.randint(1, 10)
-
-        try:
-            guess = await self.wait_for('message', check=is_correct, timeout=5.0)
-        except asyncio.TimeoutError:
-            return await message.channel.send(f'Üzgünüm,cevap vermen çok uzun sürdü {answer}.')
-        if int(guess.content) == answer:
-            await message.channel.send('Doğru!')
-        else:
-            await message.channel.send(f'Hayır,Sayı = {answer}.')
+@bot.command()
+async def repeat(ctx, times: int, content='repeating...'):
+    for i in range(times):
+        await ctx.send(content)
+        
+@bot.command()
+async def about(ctx):
+    await ctx.send('Bu discord.py kütüphanesi ile oluşturulmuş bot!')
 bot.run(token)
