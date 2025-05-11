@@ -44,5 +44,9 @@ async def on_message(message):
         await message.author.ban(reason="bağlantı göndermek yasaktır")
         await message.channel.send(f"{message.author.mention} bağlantı gönderdiği için yasaklandı")
     await bot.process_commands(message)
-    
+
+@bot.event
+async def on_message(message):
+    await message.channel.send(message.content)
+
 bot.run(token)
